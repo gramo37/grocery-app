@@ -2,7 +2,8 @@ import { View, Text, Image, StyleSheet } from 'react-native'
 import Icon from 'react-native-vector-icons/AntDesign';
 import React from 'react'
 
-const ProductItem = ({ data }) => {
+const ProductItem = ({ data, addItemToCart }) => {
+    const { id, title, price, description, images } = data;
     return (
         <View style={styles.container}>
             <View style={styles.upperContainer}><Image style={styles.image} source={{ uri: data.images[0] }} /></View>
@@ -12,7 +13,7 @@ const ProductItem = ({ data }) => {
                     <Text style={styles.price}>Rs {data.price}</Text>
                 </View>
             </View>
-            <Icon style={styles.addToKart} name="shoppingcart" size={25} color="#000" />
+            <Icon style={styles.addToKart} name="shoppingcart" size={25} color="#000" onPress={() => addItemToCart({ id, title, price, description, images, quantity: 1 })} />
         </View>
     )
 }
@@ -58,6 +59,7 @@ const styles = StyleSheet.create({
     addToKart: {
         position: 'absolute',
         right: 0,
-        margin: 3
+        margin: 3,
+        zIndex: 10
     }
 })

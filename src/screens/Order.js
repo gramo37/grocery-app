@@ -1,14 +1,26 @@
-import { ScrollView, SafeAreaView, StyleSheet, Text } from 'react-native'
-import React from 'react'
+import { ScrollView, SafeAreaView, StyleSheet, Text, StatusBar, View } from 'react-native'
+import React, { useEffect } from 'react'
 import Heading from "../components/Heading"
+import { useSelector } from 'react-redux'
+import { selectCartItems } from '../../slices/CartSlice'
+import OrderItem from '../components/OrderItem'
 
 const Order = () => {
   // Show the current items in cart and proceed to buy option here
+  const cartItems = useSelector(selectCartItems)
+  useEffect(() => {
+    console.log(cartItems)
+  }, [cartItems])
+
   return (
     <SafeAreaView style={styles.AndroidSafeArea}>
-      <Heading name="Account Details"/>
+      <Heading name="Order Details" />
       <ScrollView>
-        <Text>Order Details</Text>
+        {cartItems.length === 0 ? <Text>No Items to display</Text> : <View>
+          {cartItems.map((item) => {
+            return <OrderItem key={item.id} data={item} />
+          })}
+        </View>}
       </ScrollView>
     </SafeAreaView>
   )

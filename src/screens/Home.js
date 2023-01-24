@@ -1,40 +1,56 @@
-import { View, TextInput,Text, SafeAreaView, StyleSheet, Platform, StatusBar, Image, ScrollView } from 'react-native'
-import React, { useLayoutEffect, useState } from 'react'
+import { View, SafeAreaView, StyleSheet, Platform, StatusBar, ScrollView } from 'react-native'
+import React, { useLayoutEffect, useState, useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import SearchBar from "../components/SearchBar"
 import ProductItem from '../components/ProductItem';
 import Heading from '../components/Heading';
+import { useDispatch, useSelector } from 'react-redux';
+import {addToCart, selectCartItems} from "../../slices/CartSlice"
+import { createTwoButtonAlert } from '../../utils/createTwoButtonAlert';
 
 const Home = () => {
 
   const navigation = useNavigation();
-    const [value, setValue] = useState("");
-    const {products} = require("../data/products.json")
-    const [showProducts, setShowProducts] = useState(products)
+  const [value, setValue] = useState("");
+  const { products } = require("../data/products.json")
+  const [showProducts, setShowProducts] = useState(products)
 
-    const Search = (products, text) => {
-        return products.filter(item => {return (item.title.toLowerCase().includes(text.toLowerCase()) || item.category.toLowerCase().includes(text.toLowerCase()))});
+  const Search = (products, text) => {
+    return products.filter(item => { return (item.title.toLowerCase().includes(text.toLowerCase()) || item.category.toLowerCase().includes(text.toLowerCase())) });
+  }
+
+  const onChangeHandler = (text) => {
+    setValue(text)
+    if (text == "") {
+      setShowProducts(products)
+      return
     }
+    setShowProducts(Search(products, text));
+  }
 
-    const onChangeHandler = (text) => {
-        setValue(text)
-        if(text == "") {
-            setShowProducts(products)
-            return
-        }
-        setShowProducts(Search(products, text));
-    }
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerShown: false
+    })
+  }, [])
 
+  const dispatch = useDispatch();
 
-    useLayoutEffect(() => {
-        navigation.setOptions({
-            headerShown: false
-        })
-    }, [])
+  const cartItems = useSelector(selectCartItems);
+
+  const addItemToCart = (data) => {
+    dispatch(addToCart(data))
+    createTwoButtonAlert("Item Added Successfully", `${data.title} added to cart`, ()=>{console.log("Success")})
+  }
+
+  useEffect(() => {
+    console.log(cartItems)
+    console.log(cartItems.length)
+  }, [cartItems])
 
   return (
     <SafeAreaView style={styles.AndroidSafeArea}>
-      <Heading name="Home"/>
+      <Heading name="Home" />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.headerContainer}>
           <SearchBar value={value} onChangeHandler={onChangeHandler} />
@@ -42,11 +58,11 @@ const Home = () => {
         <View style={styles.productsContainer}>
           {/* Show All Products */}
           {showProducts.map((item) => {
-            return <ProductItem data={item} key={item.id} />
+            return <ProductItem data={item} key={item.id} addItemToCart={addItemToCart} />
           })}
         </View>
       </ScrollView>
-      </SafeAreaView>
+    </SafeAreaView>
   )
 }
 
