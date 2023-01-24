@@ -10,10 +10,10 @@ const Drawer = createDrawerNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <Drawer.Navigator drawerContent={(props) => <DrawerContent {...props}/>}>
-        <Drawer.Screen name='Home' component={Home}/>
-        <Drawer.Screen name='Account Details' component={AccountDetails}/>
-        <Drawer.Screen name='My Orders' component={Order}/>
+      <Drawer.Navigator screenOptions={{ headerShown: false }} drawerContent={(props) => <DrawerContent {...props} />}>
+        <Drawer.Screen name='Home' component={Home} />
+        <Drawer.Screen name='Account Details' component={AccountDetails} />
+        <Drawer.Screen name='My Orders' component={Order} />
       </Drawer.Navigator>
     </NavigationContainer>
   );
