@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
         width: '95%',
         height: 180,
         margin: 3,
-        resizeMode: 'cover'
+        resizeMode: 'contain'
     },
     addToKart: {
         position: 'absolute',

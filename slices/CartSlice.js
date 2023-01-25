@@ -1,8 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit"
 
-const initialState = {
-    items: []
-}
+const initialState = {items: []}
 
 export const cartSlice = createSlice({
     name: 'cart',
@@ -38,8 +36,6 @@ export const cartSlice = createSlice({
                     return
                 }
             }
-            // If not present in cart add item to cart
-            state.items = [...state.items, action.payload]
         }
     }
 })

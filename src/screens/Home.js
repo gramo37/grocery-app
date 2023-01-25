@@ -5,7 +5,7 @@ import SearchBar from "../components/SearchBar"
 import ProductItem from '../components/ProductItem';
 import Heading from '../components/Heading';
 import { useDispatch, useSelector } from 'react-redux';
-import {addToCart, selectCartItems} from "../../slices/CartSlice"
+import { addToCart, selectCartItems } from "../../slices/CartSlice"
 import { createTwoButtonAlert } from '../../utils/createTwoButtonAlert';
 
 const Home = () => {
@@ -40,21 +40,20 @@ const Home = () => {
 
   const addItemToCart = (data) => {
     dispatch(addToCart(data))
-    createTwoButtonAlert("Item Added Successfully", `${data.title} added to cart`, ()=>{console.log("Success")})
+    createTwoButtonAlert("Item Added Successfully", `${data.title} added to cart`, () => { console.log("Success") })
   }
 
   useEffect(() => {
-    console.log(cartItems)
-    console.log(cartItems.length)
+    console.log(cartItems, "cart")
   }, [cartItems])
 
   return (
     <SafeAreaView style={styles.AndroidSafeArea}>
       <Heading name="Home" />
+      <View style={styles.headerContainer}>
+        <SearchBar value={value} onChangeHandler={onChangeHandler} />
+      </View>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.headerContainer}>
-          <SearchBar value={value} onChangeHandler={onChangeHandler} />
-        </View>
         <View style={styles.productsContainer}>
           {/* Show All Products */}
           {showProducts.map((item) => {

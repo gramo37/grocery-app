@@ -9,11 +9,7 @@ import {
     Avatar,
     Title,
     Caption,
-    Paragraph,
     Drawer,
-    Text,
-    TouchableRipple,
-    Switch
 } from "react-native-paper"
 import { useNavigation } from '@react-navigation/native'
 
@@ -24,7 +20,7 @@ const DrawerContent = ({ props }) => {
             <DrawerContentScrollView {...props}>
                 <View style={[styles.userInfoSection, { flexDirection: 'row' }]}>
                     <View style={{ marginTop: 15 }}>
-                        <Avatar.Image source={require("./assets/images/prasanna.jpeg")} />
+                        <Avatar.Image size={20} source={require("./assets/images/prasanna.jpeg")} />
                     </View>
                     <View style={{ marginLeft: 9, marginTop: 15 }}>
                         <Title style={styles.title}>Prasanna</Title>
@@ -34,7 +30,7 @@ const DrawerContent = ({ props }) => {
                 <Drawer.Section style={{ flex: 1, marginTop: 15 }}>
                     <DrawerItem label="Home" onPress={() => { navigation.navigate('Home') }} />
                     <DrawerItem label="Account Details" onPress={() => { navigation.navigate('Account Details') }} />
-                    <DrawerItem label="My Orders" onPress={() => { navigation.navigate('My Orders') }} />
+                    <DrawerItem label="My Cart" onPress={() => { navigation.navigate('My Orders') }} />
                 </Drawer.Section>
             </DrawerContentScrollView>
         </View>
