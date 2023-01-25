@@ -19,6 +19,7 @@ const Order = () => {
 
   useEffect(() => {
     calculateTotal()
+    console.log("cart", cartItems, "cart")
   }, [cartItems])
 
   const calculateTotal = () => {
@@ -28,28 +29,15 @@ const Order = () => {
     setTotalPrice(total)
   }
 
-  useEffect(() => {
-    console.log("orderStatus", orderStatus, "orderStatus")
-    // Set an alert for successful order
-    if (orderStatus.loading) return
-    if (orderStatus.error !== "" && orderStatus.error !== undefined && orderStatus.error !== null) {
-      createTwoButtonAlert("Opps! Something went wrong", "", () => {  })
-      return
-    }
-    if (orderStatus?.message?.success) {
+  const proceedToBuy = async () => {
+    dispatch(createOrder(cartItems)).then(async ()=>{
       createTwoButtonAlert("Order Placed Successfully", "", () => { navigation.navigate('Account Details') })
       // Clear the cart
-      dispatch(clearCart())
-      dispatch(clearOrderStatus)
-      return
-    }
-    
-  }, [orderStatus])
-
-
-  const proceedToBuy = async () => {
-    await dispatch(createOrder(cartItems))
-
+      await dispatch(clearCart())
+      await dispatch(clearOrderStatus)
+    }).catch(()=>{
+      createTwoButtonAlert("Sorry Something went wrong", "", () => {})
+    })
   }
 
   return (
@@ -58,7 +46,7 @@ const Order = () => {
       <ScrollView>
         {cartItems && cartItems?.length === 0 ? <Text>No Items to display</Text> : <View>
           {cartItems?.map((item) => {
-            return <OrderItem key={item.id} data={item} editable={true}/>
+            return <OrderItem key={item.id} data={item} editable={true} />
           })}
           <View style={styles.totalPriceContainer}>
             <Text style={styles.totalPrice}>Total Payable: <Text style={{ fontStyle: 'italic', fontSize: 20 }}>Rs {totalPrice}</Text></Text>

@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit"
-
-const initialState = {items: []}
+import {getFromLocalStorage} from "../utils/storeAsyncStorage"
+// const initialState = {items: []}
+const value = getFromLocalStorage('cart1');
 
 export const cartSlice = createSlice({
     name: 'cart',
-    initialState,
+    initialState: {items: []},
     reducers: {
         addToCart: (state, action) => {
             // Check if item already present in cart
@@ -20,6 +21,7 @@ export const cartSlice = createSlice({
             }
             // If not present in cart add item to cart
             state.items = [...state.items, action.payload]
+            console.log(value, "vvvvvvvvvalue")
         },
         removeFromCart: (state, action) => {
             // Check if item already present in cart
@@ -45,6 +47,7 @@ export const cartSlice = createSlice({
 
 export const { addToCart, removeFromCart, clearCart } = cartSlice.actions
 
+// export const selectCartItems = state => state
 export const selectCartItems = state => state.cart.items
 
 export default cartSlice.reducer
