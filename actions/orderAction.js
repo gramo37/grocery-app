@@ -14,14 +14,6 @@ export const createOrder = (cartItems) => async (dispatch) => {
             },
         })
 
-        // Add this order to order.json file
-        const {orders} = require('../src/data/orders.json')
-        console.log(orders)
-        let temp = orders
-        temp = [...temp, cartItems]
-
-        
-
         dispatch({
             type: "GetOrderSuccess",
             payload: data

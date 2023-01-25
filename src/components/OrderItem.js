@@ -10,12 +10,12 @@ const OrderItem = ({ data, editable }) => {
 
   const addItemToCart = (data) => {
     dispatch(addToCart(data))
-    createTwoButtonAlert("Item Added Successfully", `${data.title} added to cart`, ()=>{console.log("Success")})
+    // createTwoButtonAlert("Item Added Successfully", `${data.title} added to cart`, ()=>{console.log("Success")})
   }
 
   const removeItemToCart = (data) => {
     dispatch(removeFromCart(data))
-    createTwoButtonAlert("Item Removed Successfully", `${data.title} removed from cart`, ()=>{console.log("Success")})
+    // createTwoButtonAlert("Item Removed Successfully", `${data.title} removed from cart`, ()=>{console.log("Success")})
   }
 
   const { id, title, price, description, images, quantity } = data;

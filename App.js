@@ -7,8 +7,20 @@ import AccountDetails from './src/screens/AccountDetails';
 import Home from './src/screens/Home';
 import Order from './src/screens/Order';
 import { store, persistor } from "./store"
+import { createNativeStackNavigator } from "@react-navigation/native-stack"
 
 const Drawer = createDrawerNavigator();
+const Stack = createNativeStackNavigator()
+
+export const RootStackScreen = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="Cart" component={Order} options={{
+        presentation: 'modal', headerShown: false
+      }} />
+    </Stack.Navigator>
+  )
+}
 
 export default function App() {
   return (

@@ -6,7 +6,9 @@ import ProductItem from '../components/ProductItem';
 import Heading from '../components/Heading';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart, selectCartItems } from "../../slices/CartSlice"
-import { createTwoButtonAlert } from '../../utils/createTwoButtonAlert';
+import BasketIcon from '../components/BasketIcon';
+import Loader from '../components/Loader';
+// import { createTwoButtonAlert } from '../../utils/createTwoButtonAlert';
 
 const Home = () => {
 
@@ -40,14 +42,15 @@ const Home = () => {
 
   const addItemToCart = (data) => {
     dispatch(addToCart(data))
-    createTwoButtonAlert("Item Added Successfully", `${data.title} added to cart`, () => { console.log("Success") })
+    // createTwoButtonAlert("Item Added Successfully", `${data.title} added to cart`, () => { console.log("Success") })
   }
 
   useEffect(() => {
-    console.log(cartItems, "cart")
   }, [cartItems])
 
   return (
+    <>
+    {cartItems?.length !== 0 && <BasketIcon />}
     <SafeAreaView style={styles.AndroidSafeArea}>
       <Heading name="Home" />
       <View style={styles.headerContainer}>
@@ -62,6 +65,7 @@ const Home = () => {
         </View>
       </ScrollView>
     </SafeAreaView>
+    </>
   )
 }
 

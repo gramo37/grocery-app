@@ -8,6 +8,7 @@ import { useNavigation } from '@react-navigation/native'
 import Loader from '../components/Loader'
 import { clearOrderStatus, createOrder } from '../../actions/orderAction'
 import { createTwoButtonAlert } from '../../utils/createTwoButtonAlert'
+import { calculateTotal } from "../../utils/calculateTotalPrice"
 
 const Order = () => {
   // Show the current items in cart and proceed to buy option here
@@ -18,29 +19,23 @@ const Order = () => {
   const navigation = useNavigation()
 
   useEffect(() => {
-    calculateTotal()
-    console.log("cart", cartItems, "cart")
+    setTotalPrice(calculateTotal(cartItems))
   }, [cartItems])
 
-  const calculateTotal = () => {
-    const total = cartItems.reduce((acc, curr) => {
-      return acc + curr.quantity * curr.price;
-    }, 0)
-    setTotalPrice(total)
-  }
-
   const proceedToBuy = async () => {
-    dispatch(createOrder(cartItems)).then(async ()=>{
+    dispatch(createOrder(cartItems)).then(async () => {
       createTwoButtonAlert("Order Placed Successfully", "", () => { navigation.navigate('Account Details') })
       // Clear the cart
       await dispatch(clearCart())
       await dispatch(clearOrderStatus)
-    }).catch(()=>{
-      createTwoButtonAlert("Sorry Something went wrong", "", () => {})
+    }).catch(() => {
+      createTwoButtonAlert("Sorry Something went wrong", "", () => { })
     })
   }
 
   return (
+    <>
+    {orderStatus?.loading && <Loader />}
     <SafeAreaView style={styles.AndroidSafeArea}>
       <Heading name="Cart Details" />
       <ScrollView>
@@ -58,8 +53,8 @@ const Order = () => {
           </View>
         </View>}
       </ScrollView>
-      {orderStatus?.loading && <Loader />}
     </SafeAreaView>
+    </>
   )
 }
 
