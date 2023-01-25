@@ -19,8 +19,8 @@ const DrawerContent = ({ props }) => {
         <View style={{ flex: 1 }}>
             <DrawerContentScrollView {...props}>
                 <View style={[styles.userInfoSection, { flexDirection: 'row' }]}>
-                    <View style={{ marginTop: 15 }}>
-                        <Avatar.Image size={20} source={require("./assets/images/prasanna.jpeg")} />
+                    <View style={{ marginTop: 10, marginLeft: 10 }}>
+                        <Avatar.Image size={45} source={require("./assets/images/prasanna.jpeg")} />
                     </View>
                     <View style={{ marginLeft: 9, marginTop: 15 }}>
                         <Title style={styles.title}>Prasanna</Title>
@@ -41,7 +41,11 @@ const DrawerContent = ({ props }) => {
 export default DrawerContent
 
 const styles = {
-    userInfoSection: {},
+    userInfoSection: {
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'center'
+    },
     title: {},
     caption: {}
 }
