@@ -10,6 +10,7 @@ import { clearOrderStatus, createOrder } from '../../actions/orderAction'
 import { createTwoButtonAlert } from '../../utils/createTwoButtonAlert'
 import { calculateTotal } from "../../utils/calculateTotalPrice"
 import { DARKGRAY, BLACK, GRAY } from '../assets/colors'
+// import { func } from '../../utils/saveDataToJson'
 
 const Order = () => {
   const cartItems = useSelector(selectCartItems)
@@ -27,6 +28,7 @@ const Order = () => {
       createTwoButtonAlert(orderStatus?.message?.message, "", () => { navigation.navigate('Account Details') })
       await dispatch(clearCart())
       await dispatch(clearOrderStatus)
+      // func()
     }).catch(() => {
       createTwoButtonAlert("Sorry Something went wrong", "", () => { })
     })

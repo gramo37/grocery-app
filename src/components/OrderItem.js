@@ -3,7 +3,7 @@ import React from 'react'
 import Icon from 'react-native-vector-icons/AntDesign';
 import { useDispatch } from 'react-redux';
 import { addToCart, removeFromCart } from "../../slices/CartSlice"
-import {BLACK, BLUE, DARKGRAY, GRAY, VERYLIGHTGRAY, WHITE} from "../assets/colors/index"
+import { BLACK, GRAY, VERYLIGHTGRAY, WHITE } from "../assets/colors/index"
 
 const OrderItem = ({ data, editable }) => {
   const dispatch = useDispatch();
@@ -17,7 +17,7 @@ const OrderItem = ({ data, editable }) => {
   }
 
   const { id, title, price, description, images, quantity } = data;
-  
+
   return (
     <View style={styles.container}>
       <View style={styles.leftContainer}>
@@ -25,13 +25,13 @@ const OrderItem = ({ data, editable }) => {
       </View>
       <View style={styles.rightContainer}>
         <View style={styles.descriptionContainer}>
-          <Text style={{fontSize: 20, color: BLACK, fontWeight: '600'}}>{title}</Text>
-          <Text style={{fontSize: 15, color: GRAY, fontWeight: '400', fontStyle: 'italic'}}>Rs {price}</Text>
-        {editable && <View style={styles.quantityContainer}>
-          <Icon style={styles.quantityItem} name="minuscircle" size={33} color={BLACK} onPress={() => removeItemToCart({ id, title, price, description, images, quantity: 1 })} />
-          <Text style={{...styles.quantityItem, fontSize: 15}}>{quantity}</Text>
-          <Icon style={styles.quantityItem} name="pluscircle" size={33} color={BLACK} onPress={() => addItemToCart({ id, title, price, description, images, quantity: 1 })} />
-        </View>}
+          <Text style={{ fontSize: 20, color: BLACK, fontWeight: '600' }}>{title}</Text>
+          <Text style={{ fontSize: 15, color: GRAY, fontWeight: '400', fontStyle: 'italic' }}>Rs {price}</Text>
+          <View style={styles.quantityContainer}>
+            <Icon style={styles.quantityItem} name="minuscircle" size={33} color={BLACK} onPress={() => removeItemToCart({ id, title, price, description, images, quantity: 1 })} />
+            <Text style={{ ...styles.quantityItem, fontSize: 15 }}>{quantity}</Text>
+            <Icon style={styles.quantityItem} name="pluscircle" size={33} color={BLACK} onPress={() => addItemToCart({ id, title, price, description, images, quantity: 1 })} />
+          </View>
         </View>
       </View>
     </View>
