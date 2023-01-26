@@ -12,6 +12,7 @@ import {
     Drawer,
 } from "react-native-paper"
 import { useNavigation } from '@react-navigation/native'
+const { name, profileImage, address } = require("./data/customer.json")
 
 const DrawerContent = ({ props }) => {
     const navigation = useNavigation()
@@ -20,11 +21,11 @@ const DrawerContent = ({ props }) => {
             <DrawerContentScrollView {...props}>
                 <View style={[styles.userInfoSection, { flexDirection: 'row' }]}>
                     <View style={{ marginTop: 10, marginLeft: 10 }}>
-                        <Avatar.Image size={45} source={require("./assets/images/prasanna.jpeg")} />
+                        <Avatar.Image size={45} source={{uri: profileImage}} />
                     </View>
                     <View style={{ marginLeft: 9, marginTop: 15 }}>
-                        <Title style={styles.title}>Prasanna</Title>
-                        <Caption style={styles.caption}>Pune, India</Caption>
+                        <Title style={styles.title}>{name}</Title>
+                        <Caption style={styles.caption}>{address}</Caption>
                     </View>
                 </View>
                 <Drawer.Section style={{ flex: 1, marginTop: 15 }}>

@@ -1,4 +1,4 @@
-import { ScrollView, SafeAreaView, StyleSheet, Text, StatusBar, View, Button } from 'react-native'
+import { ScrollView, SafeAreaView, StyleSheet, Text, StatusBar, View, Button, TouchableOpacity } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import Heading from "../components/Heading"
 import { useDispatch, useSelector } from 'react-redux'
@@ -9,9 +9,9 @@ import Loader from '../components/Loader'
 import { clearOrderStatus, createOrder } from '../../actions/orderAction'
 import { createTwoButtonAlert } from '../../utils/createTwoButtonAlert'
 import { calculateTotal } from "../../utils/calculateTotalPrice"
+import { DARKGRAY, BLACK, GRAY } from '../assets/colors'
 
 const Order = () => {
-  // Show the current items in cart and proceed to buy option here
   const cartItems = useSelector(selectCartItems)
   const [totalPrice, setTotalPrice] = useState(0);
   const orderStatus = useSelector(state => state.order)
@@ -25,7 +25,6 @@ const Order = () => {
   const proceedToBuy = async () => {
     dispatch(createOrder(cartItems)).then(async () => {
       createTwoButtonAlert("Order Placed Successfully", "", () => { navigation.navigate('Account Details') })
-      // Clear the cart
       await dispatch(clearCart())
       await dispatch(clearOrderStatus)
     }).catch(() => {
@@ -35,25 +34,29 @@ const Order = () => {
 
   return (
     <>
-    {orderStatus?.loading && <Loader />}
-    <SafeAreaView style={styles.AndroidSafeArea}>
-      <Heading name="Cart Details" />
-      <ScrollView>
-        {cartItems && cartItems?.length === 0 ? <Text>No Items to display</Text> : <View>
-          {cartItems?.map((item) => {
-            return <OrderItem key={item.id} data={item} editable={true} />
-          })}
-          <View style={styles.totalPriceContainer}>
-            <Text style={styles.totalPrice}>Total Payable: <Text style={{ fontStyle: 'italic', fontSize: 20 }}>Rs {totalPrice}</Text></Text>
-          </View>
-          <View style={styles.buttonContainer}>
-            <Button title='Continue Shopping' onPress={() => navigation.navigate('Home')} />
-            {/* Send Order to API */}
-            <Button title='Proceed to Buy' onPress={proceedToBuy} />
-          </View>
-        </View>}
-      </ScrollView>
-    </SafeAreaView>
+      {orderStatus?.loading && <Loader />}
+      <SafeAreaView style={styles.AndroidSafeArea}>
+        <Heading name="My Cart" />
+        <ScrollView>
+          {cartItems && cartItems?.length === 0 ? <Text style={{ textAlign: 'center' }}>No Items to display</Text> : <View>
+            {cartItems?.map((item) => {
+              return <OrderItem key={item.id} data={item} editable={true} />
+            })}
+            <View style={styles.buttonContainer}>
+              <View>
+                <Text style={{ fontSize: 20, color: DARKGRAY }}>Total Payable:</Text>
+                <Text style={{ fontStyle: 'italic', fontSize: 16, textAlign: 'center', color: GRAY }}>Rs {totalPrice}</Text>
+              </View>
+              <TouchableOpacity style={styles.placeorderButton} onPress={proceedToBuy}>
+                <Text style={{ color: 'white', fontSize: 16 }}>Place Order</Text>
+              </TouchableOpacity>
+            </View>
+            <TouchableOpacity style={styles.continueShoppingbutton} onPress={() => navigation.navigate('Home')}>
+              <Text style={{ color: 'white', fontSize: 16, textAlign: 'center' }}>Continue Shopping</Text>
+            </TouchableOpacity>
+          </View>}
+        </ScrollView>
+      </SafeAreaView>
     </>
   )
 }
@@ -72,16 +75,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginVertical: 10
   },
-  totalPriceContainer: {
-    backgroundColor: '#ededed',
-    padding: 5,
-    marginHorizontal: 6,
-    borderRadius: 12
-  },
   totalPrice: {
     fontSize: 17,
-    color: '#3d3d3d',
+    color: BLACK,
     textAlign: 'center',
     fontWeight: '400'
+  },
+  placeorderButton: {
+    backgroundColor: BLACK,
+    paddingVertical: 20,
+    paddingHorizontal: 30,
+    borderRadius: 7
+  },
+  continueShoppingbutton: {
+    backgroundColor: DARKGRAY,
+    marginHorizontal: 10,
+    padding: 20,
+    borderRadius: 7
   }
 })

@@ -32,8 +32,8 @@ const styles = {
     },
     text: {
         fontSize: 25,
-        color: 'gray',
+        color: 'black',
         fontStyle: 'bold',
-        fontWeight: Platform.OS === 'android' ? 'bold' : '500'
+        fontWeight: Platform.OS === 'android' ? 'bold' : '600'
     }
 }

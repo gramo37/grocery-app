@@ -4,13 +4,12 @@ import Heading from "../components/Heading"
 import OrderHistory from '../components/OrderHistory'
 
 const AccountDetails = () => {
-  // Show Customer details and previous orders here
   const { orders } = require("../data/orders.json")
   const { name, profileImage, address } = require("../data/customer.json")
 
   return (
     <SafeAreaView style={styles.AndroidSafeArea}>
-      <Heading name="Account Details" />
+      <Heading name="My Account" />
       {/* Display Customer Details */}
       <View style={styles.customerDetailsContainer}>
         <Image style={styles.image} source={{ uri: profileImage, width: 70, height: 70 }} />
@@ -20,7 +19,7 @@ const AccountDetails = () => {
         </View>
       </View>
       {/* Display Order Details */}
-      <View><Text style={{ textAlign: 'center', fontSize: 28, fontWeight: '700' }}>All Orders</Text></View>
+      <View><Text style={{ textAlign: 'center', fontSize: 28, fontWeight: '700' }}>Previous Orders</Text></View>
       <ScrollView style={styles.ordersContainer}>
         <View>
           {orders.length !== 0 && <View>

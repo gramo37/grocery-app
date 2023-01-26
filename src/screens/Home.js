@@ -1,5 +1,5 @@
 import { View, SafeAreaView, StyleSheet, Platform, StatusBar, ScrollView } from 'react-native'
-import React, { useLayoutEffect, useState, useEffect } from 'react'
+import React, { useLayoutEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import SearchBar from "../components/SearchBar"
 import ProductItem from '../components/ProductItem';
@@ -7,8 +7,7 @@ import Heading from '../components/Heading';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart, selectCartItems } from "../../slices/CartSlice"
 import BasketIcon from '../components/BasketIcon';
-import Loader from '../components/Loader';
-// import { createTwoButtonAlert } from '../../utils/createTwoButtonAlert';
+import { createTwoButtonAlert } from '../../utils/createTwoButtonAlert';
 
 const Home = () => {
 
@@ -16,6 +15,8 @@ const Home = () => {
   const [value, setValue] = useState("");
   const { products } = require("../data/products.json")
   const [showProducts, setShowProducts] = useState(products)
+  const dispatch = useDispatch();
+  const cartItems = useSelector(selectCartItems);
 
   const Search = (products, text) => {
     return products.filter(item => { return (item.title.toLowerCase().includes(text.toLowerCase()) || item.category.toLowerCase().includes(text.toLowerCase())) });
@@ -36,35 +37,28 @@ const Home = () => {
     })
   }, [])
 
-  const dispatch = useDispatch();
-
-  const cartItems = useSelector(selectCartItems);
-
   const addItemToCart = (data) => {
     dispatch(addToCart(data))
-    // createTwoButtonAlert("Item Added Successfully", `${data.title} added to cart`, () => { console.log("Success") })
+    createTwoButtonAlert("Item Added Successfully", `${data.title} added to cart`, () => { console.log("Success") })
   }
-
-  useEffect(() => {
-  }, [cartItems])
 
   return (
     <>
-    {cartItems?.length !== 0 && <BasketIcon />}
-    <SafeAreaView style={styles.AndroidSafeArea}>
-      <Heading name="Home" />
-      <View style={styles.headerContainer}>
-        <SearchBar value={value} onChangeHandler={onChangeHandler} />
-      </View>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.productsContainer}>
-          {/* Show All Products */}
-          {showProducts.map((item) => {
-            return <ProductItem data={item} key={item.id} addItemToCart={addItemToCart} />
-          })}
+      {cartItems?.length !== 0 && <BasketIcon />}
+      <SafeAreaView style={styles.AndroidSafeArea}>
+        <Heading name="Shop" />
+        <View style={styles.headerContainer}>
+          <SearchBar value={value} onChangeHandler={onChangeHandler} />
         </View>
-      </ScrollView>
-    </SafeAreaView>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View style={styles.productsContainer}>
+            {/* Show All Products */}
+            {showProducts.map((item) => {
+              return <ProductItem data={item} key={item.id} addItemToCart={addItemToCart} />
+            })}
+          </View>
+        </ScrollView>
+      </SafeAreaView>
     </>
   )
 }
