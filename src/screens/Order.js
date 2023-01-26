@@ -24,7 +24,7 @@ const Order = () => {
 
   const proceedToBuy = async () => {
     dispatch(createOrder(cartItems)).then(async () => {
-      createTwoButtonAlert("Order Placed Successfully", "", () => { navigation.navigate('Account Details') })
+      createTwoButtonAlert(orderStatus?.message?.message, "", () => { navigation.navigate('Account Details') })
       await dispatch(clearCart())
       await dispatch(clearOrderStatus)
     }).catch(() => {
