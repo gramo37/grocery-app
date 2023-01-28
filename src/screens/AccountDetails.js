@@ -1,6 +1,5 @@
-import { ScrollView, SafeAreaView, StyleSheet, Text, StatusBar, View, Image } from 'react-native'
+import { ScrollView, StyleSheet, Text, StatusBar, View, Image } from 'react-native'
 import React from 'react'
-import Heading from "../components/Heading"
 import OrderHistory from '../components/OrderHistory'
 
 const AccountDetails = () => {
@@ -8,8 +7,7 @@ const AccountDetails = () => {
   const { name, profileImage, address } = require("../data/customer.json")
 
   return (
-    <SafeAreaView style={styles.AndroidSafeArea}>
-      <Heading name="My Account" />
+    <View>
       {/* Display Customer Details */}
       <View style={styles.customerDetailsContainer}>
         <Image style={styles.image} source={{ uri: profileImage, width: 70, height: 70 }} />
@@ -29,7 +27,7 @@ const AccountDetails = () => {
           </View>}
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   )
 }
 
@@ -50,6 +48,7 @@ const styles = StyleSheet.create({
     borderRadius: 100
   },
   ordersContainer: {
-    marginTop: 5
+    marginTop: 5,
+    height: '64%'
   }
 })

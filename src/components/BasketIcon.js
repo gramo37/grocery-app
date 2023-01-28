@@ -47,7 +47,7 @@ export default BasketIcon
 const styles = StyleSheet.create({
     container: {
         position: 'absolute',
-        bottom: 60,
+        bottom: 48,
         left: '5%',
         zIndex: 9,
         width: '90%',

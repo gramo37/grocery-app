@@ -1,23 +1,22 @@
-import { ScrollView, SafeAreaView, StyleSheet, Text, StatusBar, View, Button, TouchableOpacity } from 'react-native'
-import React, { useState, useEffect } from 'react'
-import Heading from "../components/Heading"
+import { ScrollView, StyleSheet, Text, StatusBar, View, Button, TouchableOpacity } from 'react-native'
+import React, { useState, useEffect, useContext } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectCartItems, clearCart } from '../../slices/CartSlice'
 import OrderItem from '../components/OrderItem'
-import { useNavigation } from '@react-navigation/native'
 import Loader from '../components/Loader'
 import { clearOrderStatus, createOrder } from '../../actions/orderAction'
 import { createTwoButtonAlert } from '../../utils/createTwoButtonAlert'
 import { calculateTotal } from "../../utils/calculateTotalPrice"
 import { DARKGRAY, BLACK, GRAY } from '../assets/colors'
-// import { func } from '../../utils/saveDataToJson'
+import { DrawerContext } from '../MyDrawer';
+import { ACCOUNTDETAILS, HOME } from '../assets/screenNames'
 
 const Order = () => {
   const cartItems = useSelector(selectCartItems)
   const [totalPrice, setTotalPrice] = useState(0);
   const orderStatus = useSelector(state => state.order)
   const dispatch = useDispatch()
-  const navigation = useNavigation()
+  const { changeActiveScreen } = useContext(DrawerContext);
 
   useEffect(() => {
     setTotalPrice(calculateTotal(cartItems))
@@ -25,10 +24,9 @@ const Order = () => {
 
   const proceedToBuy = async () => {
     dispatch(createOrder(cartItems)).then(async () => {
-      createTwoButtonAlert(orderStatus?.message?.message, "", () => { navigation.navigate('Account Details') })
+      createTwoButtonAlert(orderStatus?.message?.message, "", () => { changeActiveScreen(ACCOUNTDETAILS) })
       await dispatch(clearCart())
       await dispatch(clearOrderStatus)
-      // func()
     }).catch(() => {
       createTwoButtonAlert("Sorry Something went wrong", "", () => { })
     })
@@ -37,28 +35,27 @@ const Order = () => {
   return (
     <>
       {orderStatus?.loading && <Loader />}
-      <SafeAreaView style={styles.AndroidSafeArea}>
-        <Heading name="My Cart" />
-        <ScrollView>
-          {cartItems && cartItems?.length === 0 ? <Text style={{ textAlign: 'center' }}>No Items to display</Text> : <View>
+      <View>
+        <View>
+          {cartItems && cartItems?.length === 0 ? <Text style={{ textAlign: 'center' }}>No Items to display</Text> : <><ScrollView style={{ height: '73%' }}>
             {cartItems?.map((item) => {
               return <OrderItem key={item.id} data={item} editable={true} />
             })}
-            <View style={styles.buttonContainer}>
-              <View>
-                <Text style={{ fontSize: 20, color: DARKGRAY }}>Total Payable:</Text>
-                <Text style={{ fontStyle: 'italic', fontSize: 16, textAlign: 'center', color: GRAY }}>Rs {totalPrice}</Text>
-              </View>
-              <TouchableOpacity style={styles.placeorderButton} onPress={proceedToBuy}>
-                <Text style={{ color: 'white', fontSize: 16 }}>Place Order</Text>
-              </TouchableOpacity>
+          </ScrollView>
+          <View style={styles.buttonContainer}>
+            <View>
+              <Text style={{ fontSize: 20, color: DARKGRAY }}>Total Payable:</Text>
+              <Text style={{ fontStyle: 'italic', fontSize: 16, textAlign: 'center', color: GRAY }}>Rs {totalPrice}</Text>
             </View>
-            <TouchableOpacity style={styles.continueShoppingbutton} onPress={() => navigation.navigate('Home')}>
-              <Text style={{ color: 'white', fontSize: 16, textAlign: 'center' }}>Continue Shopping</Text>
+            <TouchableOpacity style={styles.placeorderButton} onPress={proceedToBuy}>
+              <Text style={{ color: 'white', fontSize: 16 }}>Place Order</Text>
             </TouchableOpacity>
-          </View>}
-        </ScrollView>
-      </SafeAreaView>
+          </View>
+          <TouchableOpacity style={styles.continueShoppingbutton} onPress={() => changeActiveScreen(HOME)}>
+            <Text style={{ color: 'white', fontSize: 16, textAlign: 'center' }}>Continue Shopping</Text>
+          </TouchableOpacity></>}
+        </View>
+      </View>
     </>
   )
 }

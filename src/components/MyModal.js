@@ -1,17 +1,19 @@
 import { View, StyleSheet, ScrollView, Text, TouchableOpacity, Animated } from 'react-native'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { DARKGRAY, WHITE, BLACK, LIGHTGRAY, GRAY } from "../assets/colors"
 import { useSelector } from 'react-redux';
 import OrderItem from '../components/OrderItem'
 import { selectCartItems } from '../../slices/CartSlice'
 import Icon from 'react-native-vector-icons/AntDesign';
-import { useNavigation } from '@react-navigation/native'
 import { calculateTotal } from "../../utils/calculateTotalPrice"
+import { DrawerContext } from '../MyDrawer';
+import { CART } from "../assets/screenNames"
 
 const MyModal = ({ moveUp, closeModalOnPress }) => {
     const cartItems = useSelector(selectCartItems)
     const [totalPrice, setTotalPrice] = useState(0);
-    const navigation = useNavigation()
+
+    const { changeActiveScreen } = useContext(DrawerContext);
 
     useEffect(() => {
         setTotalPrice(calculateTotal(cartItems))
@@ -19,11 +21,11 @@ const MyModal = ({ moveUp, closeModalOnPress }) => {
 
     const proceedToBuy = () => {
         closeModalOnPress()
-        navigation.navigate('My Orders')
+        changeActiveScreen(CART)
     }
 
     return (
-        <Animated.View style={{...styles.container, transform: [{translateY: moveUp}]}}>
+        <Animated.View style={{ ...styles.container, transform: [{ translateY: moveUp }] }}>
             <TouchableOpacity style={styles.closeIcon}><Icon name="closecircle" size={39} color={BLACK} onPress={closeModalOnPress} /></TouchableOpacity>
             <Text style={styles.text}>Cart Items</Text>
             <ScrollView style={styles.cartItemsContainer}>
@@ -50,7 +52,7 @@ const styles = StyleSheet.create({
     container: {
         position: 'absolute',
         bottom: 0,
-        height: '90%',
+        height: '100%',
         width: '100%',
         zIndex: 10,
         backgroundColor: WHITE,
